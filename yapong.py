@@ -3,6 +3,7 @@
 
 import pygame
 from pygame.locals import *
+import yapong.ball
 
 WHITE = (255, 255, 255)
 
