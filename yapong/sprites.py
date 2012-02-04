@@ -10,6 +10,7 @@ class Ball(object):
         self.dimension = {'width': 10, 'height': 10}
         self.direction = {'x': 1, 'y': 1}
         self.position = {'x': 0, 'y': 0}
+        self.speed = 1
 
     def set_position(self, racket_1, racket_2):
         """Define next position of the ball, depending on rackets
@@ -20,8 +21,8 @@ class Ball(object):
         if self._hit_top() or self._hit_bottom():
             self.direction['y'] *= -1
 
-        self.position['x'] += 1 * self.direction['x']
-        self.position['y'] += 1 * self.direction['y']
+        self.position['x'] += self.speed * self.direction['x']
+        self.position['y'] += self.speed * self.direction['y']
 
     def _hit_racket_1(self, racket):
         """Tests if the ball hits racket 1"""
@@ -33,7 +34,8 @@ class Ball(object):
     def _hit_racket_2(self, racket):
         """Tests if the ball hits racket 2"""
         return self._is_hit_height(racket) \
-                and self.position['x'] == racket.position['x'] \
+                and self.position['x'] == racket.position['x'] - \
+                self.dimension['width'] \
                 and self.direction['x'] == 1
 
     def _hit_top(self):
@@ -41,7 +43,9 @@ class Ball(object):
         return self.position['y'] < top and self.direction['y'] == -1
 
     def _hit_bottom(self):
-        bottom = constants.SCREEN_HEIGHT - constants.SCREEN_MARGIN
+        bottom = constants.SCREEN_HEIGHT
+        bottom -= constants.SCREEN_MARGIN
+        bottom -= self.dimension['height']
         return self.position['y'] > bottom and self.direction['y'] == 1
 
     def _is_hit_height(self, racket):
@@ -60,7 +64,12 @@ class Ball(object):
         pygame.draw.rect(screen, self.color, ball_info)
 
     def reset_position(self):
-        pass
+        self.position['x'] = constants.SCREEN_WIDTH / 2
+        self.position['x'] -= self.dimension['width'] / 2
+        self.position['y'] = constants.SCREEN_HEIGHT / 2
+        self.position['y'] -= self.dimension['height'] / 2
+        self.direction['x'] = 1
+        self.direction['y'] = 1
 
 class Racket(object):
     def __init__(self, initial_x, initial_y):
@@ -68,12 +77,25 @@ class Racket(object):
         self.dimension = {'width': 10, 'height': 70}
         self.position = {'x': initial_x, 'y': initial_y}
 
+    def set_position(self, y_offset):
+        min_y = constants.SCREEN_MARGIN
+        max_y = constants.SCREEN_HEIGHT
+        max_y -= constants.SCREEN_MARGIN 
+        max_y -= self.dimension['height']
+
+        if self.position['y'] + y_offset < min_y:
+            self.position['y'] = min_y
+        elif self.position['y'] + y_offset > max_y:
+            self.position['y'] = max_y
+        else:
+            self.position['y'] += y_offset
+
     def draw(self, screen):
         info = [
                 self.position['x'],
                 self.position['y'],
-                self.dimension['x'],
-                self.dimension['y']
+                self.dimension['width'],
+                self.dimension['height']
                 ]
         pygame.draw.rect(screen, self.color, info)
 
