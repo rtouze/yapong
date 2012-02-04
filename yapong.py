@@ -3,9 +3,11 @@
 
 import pygame
 from pygame.locals import *
-import yapong.ball
+#import yapong.ball
+import yapong.constants
+import time
 
-WHITE = (255, 255, 255)
+WHITE = yapong.constants.WHITE
 
 def main():
     pygame.init()
@@ -74,6 +76,7 @@ def main():
         draw_racket_one(screen, x_current_one)
         draw_racket_two(screen, x_current_two)
         draw_ball(screen, ball_x, ball_y)
+        time.sleep(0.001)
 
 def draw_score(score_one, score_two):
     print("Score : %d - %d" % (score_one, score_two))
