@@ -7,6 +7,7 @@ from pygame.locals import *
 from yapong import constants
 from yapong.sprites import *
 from yapong.score import Score
+from yapong.drawers import ScoreDrawer
 import time
 
 WHITE = constants.WHITE
@@ -20,16 +21,10 @@ def main():
     y_offset_one = 0
     y_offset_two = 0
 
-    ball_x = 640 / 2 - 5
-    ball_y = 480 / 2 - 5
-    bal_dir_x = 1
-    bal_dir_y = 1
-
     score = Score()
-    draw_score(score)
+    score_drawer = ScoreDrawer(screen)
 
     ball = Ball()
-    ball.speed = 2
     racket1 = Racket(constants.SCREEN_MARGIN, constants.SCREEN_WIDTH/2 - 35)
     racket2 = Racket(
             constants.SCREEN_WIDTH - constants.SCREEN_MARGIN - 10,
@@ -64,7 +59,8 @@ def main():
         ball.set_position(racket1, racket2)
         score.check_score(ball)
 
-        draw_score(score)
+        #draw_score(score)
+        score_drawer.draw(score)
 
         screen.fill((0, 0, 0))
         ball.draw(screen)

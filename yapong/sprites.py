@@ -24,6 +24,9 @@ class Ball(object):
         self.position['x'] += self.speed * self.direction['x']
         self.position['y'] += self.speed * self.direction['y']
 
+    # TODO pour la collision avec les raquettes, mettre en place une tolerance
+    # de self.speed / 2
+
     def _hit_racket_1(self, racket):
         """Tests if the ball hits racket 1"""
         return self._is_hit_height(racket) \
