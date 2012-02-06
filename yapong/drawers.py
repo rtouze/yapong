@@ -48,8 +48,8 @@ class SegmentDrawer(object):
         self.x_origin = x_origin
         self.y_origin = y_origin
         self.color = constants.WHITE
-        self.long_side = 70
-        self.short_side = 10
+        self.long_side = 30
+        self.short_side = 5
         self.info = []
 
     def draw(self):
@@ -61,28 +61,38 @@ class SegmentDrawer(object):
 
 class SegmentZeroDrawer(SegmentDrawer):
     def set_info(self):
-        self.info = [self.x_origin, self.y_origin, self.long_side, self.short_side]
+        self.info = [
+                self.x_origin,
+                self.y_origin,
+                self.long_side + self.short_side,
+                self.short_side
+                ]
 
 class SegmentOneDrawer(SegmentDrawer):
     def set_info(self):
-        self.info = [self.x_origin, self.y_origin, self.short_side, self.long_side + 10]
+        self.info = [
+                self.x_origin,
+                self.y_origin,
+                self.short_side,
+                self.long_side #+ self.short_side
+                ]
 
 class SegmentTwoDrawer(SegmentDrawer):
     def set_info(self):
         self.info = [
                 self.x_origin,
-                self.y_origin + self.long_side,
-                self.long_side,
+                self.y_origin + self.long_side - self.short_side,
+                self.long_side + self.short_side,
                 self.short_side
                 ]
 
 class SegmentThreeDrawer(SegmentDrawer):
     def set_info(self):
         self.info = [
-                self.x_origin + self.short_side,
+                self.x_origin + self.long_side,
                 self.y_origin,
                 self.short_side,
-                self.long_side + 10
+                self.long_side #+ self.short_side
                 ]
 
 class SegmentFourDrawer(SegmentDrawer):
@@ -91,7 +101,7 @@ class SegmentFourDrawer(SegmentDrawer):
                 self.x_origin,
                 self.y_origin + self.long_side,
                 self.short_side,
-                self.long_side + 10
+                self.long_side + self.short_side
                 ]
 
 class SegmentFiveDrawer(SegmentDrawer):
@@ -99,16 +109,16 @@ class SegmentFiveDrawer(SegmentDrawer):
         self.info = [
                 self.x_origin,
                 self.y_origin + 2 * self.long_side,
-                self.long_side,
+                self.long_side + self.short_side,
                 self.short_side
                 ]
     
 class SegmentSixDrawer(SegmentDrawer):
     def set_info(self):
         self.info = [
-                self.x_origin + self.short_side,
+                self.x_origin + self.long_side,
                 self.y_origin + self.long_side,
                 self.short_side,
-                self.long_side + 10
+                self.long_side + self.short_side
                 ]
 

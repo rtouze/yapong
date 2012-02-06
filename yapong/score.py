@@ -11,10 +11,10 @@ class Score(object):
 
     def check_score(self, ball):
         if ball.position['x'] < 0:
-            self.player2 += 1
+            if self.player2 < 9: self.player2 += 1
             self._update_score(ball)
         if ball.position['x'] > constants.SCREEN_WIDTH:
-            self.player1 += 1
+            if self.player1 < 9: self.player1 += 1
             self._update_score(ball)
 
     def _update_score(self, ball):
