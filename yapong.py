@@ -31,6 +31,8 @@ def main():
             constants.SCREEN_WIDTH/2 - 35
             )
 
+    net = Net()
+
     while True:
         pygame.display.update()
 
@@ -61,6 +63,7 @@ def main():
 
         screen.fill((0, 0, 0))
         score_drawer.draw(score)
+        net.draw(screen)
         ball.draw(screen)
         racket1.draw(screen)
         racket2.draw(screen)

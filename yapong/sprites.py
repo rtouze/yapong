@@ -102,3 +102,19 @@ class Racket(object):
                 ]
         pygame.draw.rect(screen, self.color, info)
 
+class Net(object):
+    def __init__(self):
+        self.segment_length = 20
+        self.color = constants.WHITE
+        self.width = 5
+
+    def draw(self, screen):
+        x = constants.SCREEN_WIDTH/2 - self.width/2
+        y = 0
+        info = []
+
+        while y < constants.SCREEN_HEIGHT:
+            info = [x, y, self.width, self.segment_length]
+            pygame.draw.rect(screen, self.color, info)
+            y += self.segment_length*2
+
