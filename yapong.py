@@ -59,10 +59,8 @@ def main():
         ball.set_position(racket1, racket2)
         score.check_score(ball)
 
-        #draw_score(score)
-        score_drawer.draw(score)
-
         screen.fill((0, 0, 0))
+        score_drawer.draw(score)
         ball.draw(screen)
         racket1.draw(screen)
         racket2.draw(screen)
