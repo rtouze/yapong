@@ -56,9 +56,9 @@ def main():
                 if event.key in [pygame.K_UP, pygame.K_DOWN]:
                     y_offset_two = 0
 
-        racket1.set_position(y_offset_one)
-        racket2.set_position(y_offset_two)
-        ball.set_position(racket1, racket2)
+        racket1.update_position(y_offset_one)
+        racket2.update_position(y_offset_two)
+        ball.update_position(racket1, racket2)
         score.check_score(ball)
 
         screen.fill((0, 0, 0))
@@ -68,12 +68,6 @@ def main():
         racket1.draw(screen)
         racket2.draw(screen)
         time.sleep(0.002)
-
-# TODO : gerer le score autrement, c'est nul la
-def draw_score(score):
-    if score.updated:
-        print("Score : %d - %d" % (score.player1, score.player2))
-    score.updated = False
 
 if __name__ == '__main__':
     main()

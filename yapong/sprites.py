@@ -12,7 +12,7 @@ class Ball(object):
         self.position = {'x': 0, 'y': 0}
         self.speed = 1
 
-    def set_position(self, racket_1, racket_2):
+    def update_position(self, racket_1, racket_2):
         """Define next position of the ball, depending on rackets
         information"""
         if self._hit_racket_1(racket_1) or self._hit_racket_2(racket_2):
@@ -29,14 +29,14 @@ class Ball(object):
 
     def _hit_racket_1(self, racket):
         """Tests if the ball hits racket 1"""
-        return self._is_hit_height(racket) \
+        return self._hit_height(racket) \
                 and self.position['x'] == racket.position['x'] + \
                 racket.dimension['width'] \
                 and self.direction['x'] == -1
 
     def _hit_racket_2(self, racket):
         """Tests if the ball hits racket 2"""
-        return self._is_hit_height(racket) \
+        return self._hit_height(racket) \
                 and self.position['x'] == racket.position['x'] - \
                 self.dimension['width'] \
                 and self.direction['x'] == 1
@@ -51,9 +51,9 @@ class Ball(object):
         bottom -= self.dimension['height']
         return self.position['y'] > bottom and self.direction['y'] == 1
 
-    def _is_hit_height(self, racket):
+    def _hit_height(self, racket):
         """Tests if the ball is high enough to hit a racket"""
-        return self.position['y'] > racket.position['y'] \
+        return self.position['y'] > racket.position['y'] - self.dimension['height'] \
                 and self.position['y'] < racket.position['y'] + \
                 racket.dimension['height']
 
@@ -80,7 +80,7 @@ class Racket(object):
         self.dimension = {'width': 10, 'height': 70}
         self.position = {'x': initial_x, 'y': initial_y}
 
-    def set_position(self, y_offset):
+    def update_position(self, y_offset):
         min_y = constants.SCREEN_MARGIN
         max_y = constants.SCREEN_HEIGHT
         max_y -= constants.SCREEN_MARGIN 
