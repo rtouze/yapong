@@ -3,6 +3,7 @@
 
 import pygame
 from pygame.locals import *
+from pygame.time import Clock
 #import yapong.ball
 from yapong import constants
 from yapong.sprites import *
@@ -32,6 +33,7 @@ def main():
             )
 
     net = Net()
+    clock=Clock()
 
     while True:
         pygame.display.update()
@@ -67,7 +69,8 @@ def main():
         ball.draw(screen)
         racket1.draw(screen)
         racket2.draw(screen)
-        time.sleep(0.002)
+        #time.sleep(0.002)
+        clock.tick(80)
 
 if __name__ == '__main__':
     main()
