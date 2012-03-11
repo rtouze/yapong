@@ -17,26 +17,38 @@ class TestBall(unittest.TestCase):
         self.ball = Ball()
         self.ball.direction['y'] = 1
         self.ball.direction['x'] = 1
+        self.ball.speed = 1
 
     def test_collision_w_racket_1(self):
         x_pos = self.racket.position['x'] + self.racket.dimension['width']
         self.ball.position['x'] = x_pos
         self.ball.position['y'] = 30 
         self.ball.direction['x'] = -1
+        self.check_ball_pos_update_rkt1(x_pos)
+
+    def check_ball_pos_update_rkt1(self, x_pos):
         self.ball.update_position(self.racket, self.racket2)
         self.assertEqual(1, self.ball.direction['x'])
-        self.assertEqual(x_pos + 1, self.ball.position['x'])
+        self.assertEqual(x_pos + self.ball.speed, self.ball.position['x'])
 
-    def test_partial_collision_w_racker_1(self):
+    def test_partial_collision_w_racket_1(self):
         """Tests when the ball is partially hits the top of racket 1"""
         x_pos = self.racket.position['x'] + self.racket.dimension['width']
         self.ball.position['x'] = x_pos
         self.racket.position['y'] = 50
         self.ball.position['y'] = 45
         self.ball.direction['x'] = -1
-        self.ball.update_position(self.racket, self.racket2)
-        self.assertEqual(1, self.ball.direction['x'])
-        self.assertEqual(x_pos + 1, self.ball.position['x'])
+        self.check_ball_pos_update_rkt1(x_pos)
+
+    def test_collision_w_racket1_depending_on_speed(self):
+        """We have a problem with ball.speed > 1. The position increment can
+        avoid the exact collision. We have to introduce a tolerance"""
+        self.ball.speed = 2
+        x_pos = self.racket.position['x'] + self.racket.dimension['width'] - 1
+        self.ball.position['x'] = x_pos
+        self.ball.position['y'] = 30 
+        self.ball.direction['x'] = -1
+        self.check_ball_pos_update_rkt1(x_pos)
 
     def test_collision_w_racket_2(self):
         x_pos = self.racket2.position['x'] - self.ball.dimension['width']
@@ -54,6 +66,18 @@ class TestBall(unittest.TestCase):
         self.ball.update_position(self.racket, self.racket2)
         self.assertEqual(-1, self.ball.direction['x'])
         self.assertEqual(x_pos - 1, self.ball.position['x'])
+
+    def test_collision_w_racket2_depending_on_speed(self):
+        """We have a problem with ball.speed > 1. The position increment can
+        avoid the exact collision. We have to introduce a tolerance"""
+        self.ball.speed = 2
+        x_pos = self.racket2.position['x'] - self.ball.dimension['width'] + 1
+        self.ball.position['x'] = x_pos
+        self.ball.position['y'] = 30 
+        self.ball.direction['x'] = 1
+        self.ball.update_position(self.racket, self.racket2)
+        self.assertEqual(-1, self.ball.direction['x'])
+        self.assertEqual(x_pos - self.ball.speed, self.ball.position['x'])
 
     def test_collision_on_top(self):
         y_pos = constants.SCREEN_MARGIN - 1

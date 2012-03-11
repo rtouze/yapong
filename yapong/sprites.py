@@ -3,6 +3,7 @@
 
 import constants
 import pygame
+import config
 
 class Ball(object):
     def __init__(self):
@@ -10,7 +11,7 @@ class Ball(object):
         self.dimension = {'width': 10, 'height': 10}
         self.direction = {'x': 1, 'y': 1}
         self.position = {'x': 0, 'y': 0}
-        self.speed = 1
+        self.speed = config.BALL_SPEED
 
     def update_position(self, racket_1, racket_2):
         """Define next position of the ball, depending on rackets
@@ -24,22 +25,27 @@ class Ball(object):
         self.position['x'] += self.speed * self.direction['x']
         self.position['y'] += self.speed * self.direction['y']
 
-    # TODO pour la collision avec les raquettes, mettre en place une tolerance
-    # de self.speed / 2
-
     def _hit_racket_1(self, racket):
         """Tests if the ball hits racket 1"""
-        return self._hit_height(racket) \
-                and self.position['x'] == racket.position['x'] + \
-                racket.dimension['width'] \
+        hit_x_position_base = racket.position['x'] + racket.dimension['width']
+        return self._hit_a_racket(racket, hit_x_position_base) \
                 and self.direction['x'] == -1
+
 
     def _hit_racket_2(self, racket):
         """Tests if the ball hits racket 2"""
-        return self._hit_height(racket) \
-                and self.position['x'] == racket.position['x'] - \
-                self.dimension['width'] \
+        hit_x_position_base = racket.position['x'] - self.dimension['width']
+        return self._hit_a_racket(racket, hit_x_position_base) \
                 and self.direction['x'] == 1
+
+    #TODO Have to change the vertical speed of the ball depending on the way
+    # it hits the rackets
+    def _hit_a_racket(self, racket, hit_x_position_base):
+        hit_x_position_low = hit_x_position_base - self.speed/2 
+        hit_x_position_high = hit_x_position_base + self.speed/2 
+        return self._hit_height(racket) \
+                and self.position['x'] >= hit_x_position_low \
+                and self.position['x'] <= hit_x_position_high \
 
     def _hit_top(self):
         top = constants.SCREEN_MARGIN 
@@ -77,7 +83,7 @@ class Ball(object):
 class Racket(object):
     def __init__(self, initial_x, initial_y):
         self.color = constants.WHITE
-        self.dimension = {'width': 10, 'height': 70}
+        self.dimension = {'width': 10, 'height': config.RACKET_HEIGHT}
         self.position = {'x': initial_x, 'y': initial_y}
 
     def update_position(self, y_offset):
