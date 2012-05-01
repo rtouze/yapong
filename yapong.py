@@ -12,6 +12,10 @@ from yapong.drawers import ScoreDrawer
 import time
 
 WHITE = constants.WHITE
+R1_DOWN = 1
+R1_UP = 2
+R2_DOWN = 3
+R2_UP = 4
 
 def main():
     pygame.init()
@@ -36,11 +40,27 @@ def main():
     net = Net()
     clock=Clock()
 
+    accel_r1 = 0
+    accel_r2 = 0
+
+    previous_r1 = 0
+    previous_r2 = 0
+
     while True:
         pygame.display.update()
 
-        accel_r1 = 1
-        accel_r2 = 1
+        if previous_r1 == R1_DOWN and accel_r1 < 30:
+            accel_r1 += 1
+        if previous_r1 == R1_UP and accel_r1 > -30:
+            accel_r1 -= 1
+        if previous_r2 == R2_DOWN and accel_r2 < 30:
+            accel_r2 += 1
+        if previous_r2 == R2_UP and accel_r2 > -30:
+            accel_r2 -= 1
+
+        if previous_r1 == 0: accel_r1 = 0
+        if previous_r2 == 0: accel_r2 = 0
+
 
         #Event loop
         for event in pygame.event.get():
@@ -48,22 +68,28 @@ def main():
                 exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
-                    y_offset_one = -3
+                    y_offset_one = -1
+                    previous_r1 = R1_UP
                 if event.key == pygame.K_d:
-                    y_offset_one = 3
+                    y_offset_one = 1
+                    previous_r1 = R1_DOWN
                 if event.key == pygame.K_UP:
-                    y_offset_two = -3
+                    y_offset_two = -1
+                    previous_r2 = R2_UP
                 if event.key == pygame.K_DOWN:
-                    y_offset_two = 3
+                    y_offset_two = 1
+                    previous_r2 = R2_DOWN
 
             if event.type == pygame.KEYUP:
                 if event.key in [pygame.K_e, pygame.K_d]:
                     y_offset_one = 0
+                    previous_r1 = 0
                 if event.key in [pygame.K_UP, pygame.K_DOWN]:
                     y_offset_two = 0
+                    previous_r2 = 0
 
-        racket1.update_position(y_offset_one)
-        racket2.update_position(y_offset_two)
+        racket1.update_position(y_offset_one, accel_r1)
+        racket2.update_position(y_offset_two, accel_r2)
         ball.update_position(racket1, racket2)
         score.check_score(ball)
 
@@ -73,7 +99,6 @@ def main():
         ball.draw(screen)
         racket1.draw(screen)
         racket2.draw(screen)
-        #time.sleep(0.002)
         clock.tick(80)
 
 if __name__ == '__main__':

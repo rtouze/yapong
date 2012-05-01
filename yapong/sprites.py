@@ -85,6 +85,8 @@ class Ball(object):
         self.position['y'] -= self.dimension['height'] / 2
         self.direction['x'] = 1
         self.direction['y'] = 1
+        self.speeds['x'] = config.BALL_SPEED
+        self.speeds['y'] = config.BALL_SPEED
 
 class Racket(object):
     def __init__(self, initial_x, initial_y):
@@ -93,18 +95,20 @@ class Racket(object):
         self.position = {'x': initial_x, 'y': initial_y}
         self.acceleration = 1
 
-    def update_position(self, y_offset):
+    def update_position(self, y_offset, acceleration=30):
         min_y = constants.SCREEN_MARGIN
         max_y = constants.SCREEN_HEIGHT
         max_y -= constants.SCREEN_MARGIN 
         max_y -= self.dimension['height']
+
+        self.acceleration = (abs(acceleration)/10 + 1)
 
         if self.position['y'] + y_offset < min_y:
             self.position['y'] = min_y
         elif self.position['y'] + y_offset > max_y:
             self.position['y'] = max_y
         else:
-            self.position['y'] += y_offset
+            self.position['y'] += y_offset * self.acceleration
 
     def draw(self, screen):
         info = [

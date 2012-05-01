@@ -4,8 +4,10 @@
 
 import unittest
 import constants
+
 from sprites import Racket
 from sprites import Ball
+import config
 
 class TestBall(unittest.TestCase):
     def setUp(self):
@@ -103,11 +105,16 @@ class TestBall(unittest.TestCase):
         self.ball.position['x'] = 42
         self.ball.position['y'] = 69
         self.ball.direction['x'] = -1
+        self.ball.speeds['x'] = 2
+        self.ball.speeds['y'] = 4
+
         self.ball.reset_position()
         self.assertEqual(constants.SCREEN_WIDTH / 2 - 5, self.ball.position['x'])
         self.assertEqual(constants.SCREEN_HEIGHT / 2 - 5, self.ball.position['y'])
         self.assertEqual(1, self.ball.direction['x'])
         self.assertEqual(1, self.ball.direction['y'])
+        self.assertEqual(config.BALL_SPEED, self.ball.speeds['x'])
+        self.assertEqual(config.BALL_SPEED, self.ball.speeds['y'])
 
     def test_ball_vert_speed_after_impact_r1(self):
         x_pos = self.racket.position['x'] + self.racket.dimension['width']
@@ -138,8 +145,20 @@ class RackerTest(unittest.TestCase):
         
     def test_update_position(self):
         """Tests the position update in the regular way"""
-        self.racket.update_position(3)
+        self.racket.update_position(1)
+        self.assertEqual(constants.SCREEN_MARGIN + 4, self.racket.position['y'])
+
+    def test_update_position_with_acceleration(self):
+        """Tests the position update with an acceleration factor"""
+        self.racket.update_position(1, 30)
+        self.assertEqual(constants.SCREEN_MARGIN + 4, self.racket.position['y'])
+        self.assertEqual(self.racket.acceleration, 4)
+        
+    def test_update_position_with_deceleration(self):
+        """Tests the position update with a deceleration factor"""
+        self.racket.update_position(1, -22)
         self.assertEqual(constants.SCREEN_MARGIN + 3, self.racket.position['y'])
+        self.assertEqual(self.racket.acceleration, 3)
 
     def test_limit_top(self):
         """Test that the racket cannot go beyond top limit"""
