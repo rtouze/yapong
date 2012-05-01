@@ -39,6 +39,9 @@ def main():
     while True:
         pygame.display.update()
 
+        accel_r1 = 1
+        accel_r2 = 1
+
         #Event loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

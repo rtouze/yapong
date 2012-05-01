@@ -11,26 +11,32 @@ class Ball(object):
         self.dimension = {'width': 10, 'height': 10}
         self.direction = {'x': 1, 'y': 1}
         self.position = {'x': 0, 'y': 0}
-        self.speed = config.BALL_SPEED
+        speed = config.BALL_SPEED
+        self.speeds = {'x': speed, 'y': speed}
+        
 
     def update_position(self, racket_1, racket_2):
         """Define next position of the ball, depending on rackets
         information"""
-        if self._hit_racket_1(racket_1) or self._hit_racket_2(racket_2):
+        if self._hit_racket_1(racket_1):
             self.direction['x'] *= -1
+            self.speeds['y'] = racket_1.acceleration
+
+        if self._hit_racket_2(racket_2):
+            self.direction['x'] *= -1
+            self.speeds['y'] = racket_2.acceleration
 
         if self._hit_top() or self._hit_bottom():
             self.direction['y'] *= -1
 
-        self.position['x'] += self.speed * self.direction['x']
-        self.position['y'] += self.speed * self.direction['y']
+        self.position['x'] += self.speeds['x'] * self.direction['x']
+        self.position['y'] += self.speeds['y'] * self.direction['y']
 
     def _hit_racket_1(self, racket):
         """Tests if the ball hits racket 1"""
         hit_x_position_base = racket.position['x'] + racket.dimension['width']
         return self._hit_a_racket(racket, hit_x_position_base) \
                 and self.direction['x'] == -1
-
 
     def _hit_racket_2(self, racket):
         """Tests if the ball hits racket 2"""
@@ -41,8 +47,8 @@ class Ball(object):
     #TODO Have to change the vertical speed of the ball depending on the way
     # it hits the rackets
     def _hit_a_racket(self, racket, hit_x_position_base):
-        hit_x_position_low = hit_x_position_base - self.speed/2 
-        hit_x_position_high = hit_x_position_base + self.speed/2 
+        hit_x_position_low = hit_x_position_base - self.speeds['x']/2 
+        hit_x_position_high = hit_x_position_base + self.speeds['x']/2 
         return self._hit_height(racket) \
                 and self.position['x'] >= hit_x_position_low \
                 and self.position['x'] <= hit_x_position_high \
@@ -85,6 +91,7 @@ class Racket(object):
         self.color = constants.WHITE
         self.dimension = {'width': 10, 'height': config.RACKET_HEIGHT}
         self.position = {'x': initial_x, 'y': initial_y}
+        self.acceleration = 1
 
     def update_position(self, y_offset):
         min_y = constants.SCREEN_MARGIN
