@@ -4,6 +4,8 @@
 import pygame
 import constants
 
+BIG = 1
+
 class ScoreDrawer(object):
     score_table = [
             (0, 1, 3, 4, 5, 6),
@@ -46,6 +48,183 @@ class ScoreDrawer(object):
         if score.player2 < 10:
             for segment in self.score_table[score.player2]:
                 self.drawers_score_two[segment].draw()
+
+class TitleDrawer(object):
+    def __init__(self, screen):
+        self.screen = screen
+        self.letters = [
+            LetterY(self.screen, 10, 10),
+            LetterA(self.screen, 60, 10),
+            LetterP(self.screen, 110, 10),
+            LetterO(self.screen, 160, 10),
+            LetterN(self.screen, 210, 10),
+            LetterG(self.screen, 260, 10)
+            ]
+        
+    def draw(self):
+        for letter in self.letters: letter.draw()
+    
+
+class Letter(object):
+    def __init__(self, screen, x_origin, y_origin, scale=BIG):
+        self.long_side = 30
+        self.short_side = 4
+        self.x_origin = x_origin
+        self.y_origin = y_origin
+        self._set_coord_list()
+        self.screen = screen
+        self.color = constants.WHITE
+
+    def draw(self):
+        for rect in self.coord_list:
+            pygame.draw.rect(self.screen, self.color, rect)
+
+class LetterY(Letter):
+    def _set_coord_list(self):
+        self.coord_list = [
+                [self.x_origin, self.y_origin, self.short_side, self.long_side],
+                [self.x_origin,
+                    self.y_origin + self.long_side - self.short_side,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin + self.long_side/2 - self.short_side/2,
+                    self.y_origin + self.long_side,
+                    self.short_side,
+                    self.long_side]
+                ]
+
+class LetterA(Letter):
+    def _set_coord_list(self):
+        self.coord_list = [
+                [self.x_origin, self.y_origin, self.long_side, self.short_side],
+                [self.x_origin, self.y_origin, self.short_side, self.long_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin,
+                    self.y_origin + self.long_side - self.short_side,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin,
+                    self.y_origin + self.long_side,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin + self.long_side,
+                    self.short_side,
+                    self.long_side]
+                ]
+
+class LetterP(Letter):
+    def _set_coord_list(self):
+        self.coord_list = [
+                [self.x_origin,
+                    self.y_origin,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin,
+                    self.y_origin,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin,
+                    self.y_origin + self.long_side - self.short_side,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin,
+                    self.y_origin + self.long_side,
+                    self.short_side,
+                    self.long_side]
+                ]
+
+class LetterO(Letter):
+    def _set_coord_list(self):
+        self.coord_list = [
+                [self.x_origin,
+                    self.y_origin,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin,
+                    self.y_origin,
+                    self.short_side,
+                    2*self.long_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin,
+                    self.short_side,
+                    2*self.long_side],
+                [self.x_origin,
+                    self.y_origin + 2*self.long_side - self.short_side,
+                    self.long_side,
+                    self.short_side]
+                ]
+
+class LetterN(Letter):
+    def _set_coord_list(self):
+        self.coord_list = [
+                [self.x_origin,
+                    self.y_origin,
+                    self.short_side,
+                    2*self.long_side],
+                [self.x_origin,
+                    self.y_origin,
+                    self.long_side/2,
+                    self.short_side],
+                [self.x_origin + self.long_side/2 - self.short_side,
+                    self.y_origin,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin + self.long_side/2 - self.short_side,
+                    self.y_origin + self.long_side,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin + self.long_side/2,
+                    self.y_origin + 2*self.long_side - self.short_side,
+                    self.long_side/2,
+                    self.short_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin,
+                    self.short_side,
+                    2*self.long_side]
+                ]
+
+class LetterG(Letter):
+    def _set_coord_list(self):
+        self.coord_list = [
+                [self.x_origin,
+                    self.y_origin,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin,
+                    self.y_origin,
+                    self.short_side,
+                    2*self.long_side],
+                [self.x_origin,
+                    self.y_origin + 2*self.long_side - self.short_side,
+                    self.long_side,
+                    self.short_side],
+                [self.x_origin + self.long_side - self.short_side,
+                    self.y_origin + self.long_side - self.short_side,
+                    self.short_side,
+                    self.long_side],
+                [self.x_origin + self.long_side/2,
+                    self.y_origin + self.long_side - self.short_side,
+                    self.long_side/2,
+                    self.short_side]
+                ]
+
+
+
+
+
+
 
 class SegmentDrawer(object):
     """Base class to draw segments of the score. Bellow is segment organization.

@@ -8,7 +8,7 @@ from pygame.time import Clock
 from yapong import constants
 from yapong.sprites import *
 from yapong.score import Score
-from yapong.drawers import ScoreDrawer
+from yapong.drawers import ScoreDrawer, TitleDrawer
 import time
 
 WHITE = constants.WHITE
@@ -45,6 +45,9 @@ def main():
 
     previous_r1 = 0
     previous_r2 = 0
+
+    #temp
+    title = TitleDrawer(screen)
 
     while True:
         pygame.display.update()
@@ -94,11 +97,15 @@ def main():
         score.check_score(ball)
 
         screen.fill((0, 0, 0))
-        score_drawer.draw(score)
+        #DEBUG - score_drawer.draw(score)
         net.draw(screen)
         ball.draw(screen)
         racket1.draw(screen)
         racket2.draw(screen)
+
+        #temp
+        title.draw()
+
         clock.tick(80)
 
 if __name__ == '__main__':
