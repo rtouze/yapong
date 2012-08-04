@@ -52,13 +52,16 @@ class ScoreDrawer(object):
 class TitleDrawer(object):
     def __init__(self, screen):
         self.screen = screen
+        #start_x, start_y = 10, 10
+        start_x, start_y = 180, 300 - 100
+
         self.letters = [
-            LetterY(self.screen, 10, 10),
-            LetterA(self.screen, 60, 10),
-            LetterP(self.screen, 110, 10),
-            LetterO(self.screen, 160, 10),
-            LetterN(self.screen, 210, 10),
-            LetterG(self.screen, 260, 10)
+            LetterY(self.screen, start_x, start_y),
+            LetterA(self.screen, start_x + 50, start_y),
+            LetterP(self.screen, start_x + 50*2, start_y),
+            LetterO(self.screen, start_x + 50*3, start_y),
+            LetterN(self.screen, start_x + 50*4, start_y),
+            LetterG(self.screen, start_x + 50*5, start_y)
             ]
         
     def draw(self):

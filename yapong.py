@@ -46,6 +46,8 @@ def main():
     previous_r1 = 0
     previous_r2 = 0
 
+    scene_nb = 0 # first scene by default
+
     #temp
     title = TitleDrawer(screen)
 
@@ -67,44 +69,48 @@ def main():
 
         #Event loop
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e:
-                    y_offset_one = -1
-                    previous_r1 = R1_UP
-                if event.key == pygame.K_d:
-                    y_offset_one = 1
-                    previous_r1 = R1_DOWN
-                if event.key == pygame.K_UP:
-                    y_offset_two = -1
-                    previous_r2 = R2_UP
-                if event.key == pygame.K_DOWN:
-                    y_offset_two = 1
-                    previous_r2 = R2_DOWN
+            if scene_nb == 1:
+                if event.type == pygame.QUIT:
+                    exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_e:
+                        y_offset_one = -1
+                        previous_r1 = R1_UP
+                    if event.key == pygame.K_d:
+                        y_offset_one = 1
+                        previous_r1 = R1_DOWN
+                    if event.key == pygame.K_UP:
+                        y_offset_two = -1
+                        previous_r2 = R2_UP
+                    if event.key == pygame.K_DOWN:
+                        y_offset_two = 1
+                        previous_r2 = R2_DOWN
 
-            if event.type == pygame.KEYUP:
-                if event.key in [pygame.K_e, pygame.K_d]:
-                    y_offset_one = 0
-                    previous_r1 = 0
-                if event.key in [pygame.K_UP, pygame.K_DOWN]:
-                    y_offset_two = 0
-                    previous_r2 = 0
+                if event.type == pygame.KEYUP:
+                    if event.key in [pygame.K_e, pygame.K_d]:
+                        y_offset_one = 0
+                        previous_r1 = 0
+                    if event.key in [pygame.K_UP, pygame.K_DOWN]:
+                        y_offset_two = 0
+                        previous_r2 = 0
+            elif scene_nb == 0:
+                if event.type == pygame.KEYDOWN: scene_nb += 1
 
-        racket1.update_position(y_offset_one, accel_r1)
-        racket2.update_position(y_offset_two, accel_r2)
-        ball.update_position(racket1, racket2)
-        score.check_score(ball)
+
+        if scene_nb == 1:
+            racket1.update_position(y_offset_one, accel_r1)
+            racket2.update_position(y_offset_two, accel_r2)
+            ball.update_position(racket1, racket2)
+            score.check_score(ball)
 
         screen.fill((0, 0, 0))
-        #DEBUG - score_drawer.draw(score)
-        net.draw(screen)
-        ball.draw(screen)
-        racket1.draw(screen)
-        racket2.draw(screen)
-
-        #temp
-        title.draw()
+        if scene_nb == 1:
+            score_drawer.draw(score)
+            net.draw(screen)
+            ball.draw(screen)
+            racket1.draw(screen)
+            racket2.draw(screen)
+        elif scene_nb == 0: title.draw()
 
         clock.tick(80)
 
