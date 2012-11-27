@@ -4,7 +4,6 @@
 import pygame
 from pygame.locals import *
 from pygame.time import Clock
-#import yapong.ball
 from yapong import constants
 from yapong.sprites import *
 from yapong.score import Score
@@ -18,10 +17,22 @@ R2_DOWN = 3
 R2_UP = 4
 
 def main():
+
     pygame.init()
+
+    # sound file
+    # TODO test that file exists!
+    beep_filename_1 = './yapong/sounds/beep-7.wav'
+    beep_filename_2 = './yapong/sounds/beep-8.wav'
+    sound_1 = pygame.mixer.Sound(beep_filename_1)
+    sound_2 = pygame.mixer.Sound(beep_filename_2)
+
     screenRes = (constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
     screen = pygame.display.set_mode(screenRes, 0, 32)
     pygame.display.set_caption("Yapong")
+
+    background = pygame.Surface(screen.get_size())
+    background.fill((0, 0, 0))
 
     y_offset_one = 0
     y_offset_two = 0
@@ -29,7 +40,7 @@ def main():
     score = Score()
     score_drawer = ScoreDrawer(screen)
 
-    ball = Ball()
+    ball = Ball(sound_1, sound_2)
     racket_x_position = 60
     racket1 = Racket(racket_x_position, constants.SCREEN_WIDTH/2 - 35)
     racket2 = Racket(
@@ -50,6 +61,9 @@ def main():
 
     #temp
     title = TitleDrawer(screen)
+
+    screen.blit(background, (0, 0))
+    pygame.display.flip()
 
     while True:
         pygame.display.update()
@@ -94,6 +108,8 @@ def main():
                         y_offset_two = 0
                         previous_r2 = 0
             elif scene_nb == 0:
+                if event.type == pygame.QUIT:
+                    exit()
                 if event.type == pygame.KEYDOWN: scene_nb += 1
 
 
@@ -103,8 +119,11 @@ def main():
             ball.update_position(racket1, racket2)
             score.check_score(ball)
 
+        # TODO use blit to improve perf (http://www.pygame.org/docs/tut/tom/games2.html)
+        # TODO score are blitted only on refresh
         screen.fill((0, 0, 0))
         if scene_nb == 1:
+
             score_drawer.draw(score)
             net.draw(screen)
             ball.draw(screen)

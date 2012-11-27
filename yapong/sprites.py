@@ -6,23 +6,27 @@ import pygame
 import config
 
 class Ball(object):
-    def __init__(self):
+    def __init__(self, sound_1=None, sound_2=None):
         self.color = constants.WHITE
         self.dimension = {'width': 10, 'height': 10}
         self.direction = {'x': 1, 'y': 1}
         self.position = {'x': 0, 'y': 0}
         speed = config.BALL_SPEED
         self.speeds = {'x': speed, 'y': speed}
+        self.sound_1 = sound_1
+        self.sound_2 = sound_2
         
 
     def update_position(self, racket_1, racket_2):
         """Define next position of the ball, depending on rackets
         information"""
         if self._hit_racket_1(racket_1):
+            self.sound_1.play()
             self.direction['x'] *= -1
             self.speeds['y'] = racket_1.acceleration
 
         if self._hit_racket_2(racket_2):
+            self.sound_2.play()
             self.direction['x'] *= -1
             self.speeds['y'] = racket_2.acceleration
 
