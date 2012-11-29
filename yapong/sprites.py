@@ -15,18 +15,17 @@ class Ball(object):
         self.speeds = {'x': speed, 'y': speed}
         self.sound_1 = sound_1
         self.sound_2 = sound_2
-        
 
     def update_position(self, racket_1, racket_2):
         """Define next position of the ball, depending on rackets
         information"""
         if self._hit_racket_1(racket_1):
-            self.sound_1.play()
+            if self.sound_1: self.sound_1.play()
             self.direction['x'] *= -1
             self.speeds['y'] = racket_1.acceleration
 
         if self._hit_racket_2(racket_2):
-            self.sound_2.play()
+            if self.sound_2: self.sound_2.play()
             self.direction['x'] *= -1
             self.speeds['y'] = racket_2.acceleration
 
@@ -48,8 +47,6 @@ class Ball(object):
         return self._hit_a_racket(racket, hit_x_position_base) \
                 and self.direction['x'] == 1
 
-    #TODO Have to change the vertical speed of the ball depending on the way
-    # it hits the rackets
     def _hit_a_racket(self, racket, hit_x_position_base):
         hit_x_position_low = hit_x_position_base - self.speeds['x']/2 
         hit_x_position_high = hit_x_position_base + self.speeds['x']/2 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-""" Debut de jeu pong en python """
+""" Pong clone game using Python """
 
 import pygame
 from pygame.locals import *
@@ -10,12 +10,15 @@ from yapong.score import Score
 from yapong.drawers import ScoreDrawer, TitleDrawer
 import os
 
+__author__ = 'romain.touze@gmail.com'
+
 R1_DOWN = 1
 R1_UP = 2
 R2_DOWN = 3
 R2_UP = 4
 
 def main():
+    """Main part of the app, with the different scenes and so on."""
 
     pygame.init()
 
@@ -25,13 +28,18 @@ def main():
     background = pygame.Surface(screen.get_size())
     clock = Clock()
 
-
     scene_nb = 0 # first scene by default
+    font = pygame.font.Font(pygame.font.get_default_font(), 20)
+    font_surface = font.render("Push a button to start...", True, constants.WHITE)
 
     title = TitleDrawer(background)
     title.draw()
     screen.blit(background, (0, 0))
+
     pygame.display.flip()
+
+    countdown = 0
+    title_not_shown = True
 
     # Scene 1
     while scene_nb == 0:
@@ -39,7 +47,15 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
-            if event.type == pygame.KEYDOWN: scene_nb += 1
+            if event.type == pygame.KEYDOWN and not title_not_shown: scene_nb += 1
+
+        if countdown > 20 and title_not_shown:
+            background.blit(font_surface, (210,300))
+            screen.blit(background, (0, 0))
+            pygame.display.flip()
+            title_not_shown = False
+
+        countdown += 1
         clock.tick(10)
 
     # Scene 2
@@ -127,11 +143,16 @@ def main():
         clock.tick(constants.REFRESH_RATE)
 
 def init_sounds():
+    """This functions initializes the sounds, stored in yapong/sounds, that
+    will be played during the game."""
     sound_dir = os.path.join('.', 'yapong', 'sounds')
     beep_filename_1 = os.path.join(sound_dir, 'beep-7.wav')
     beep_filename_2 = os.path.join(sound_dir, 'beep-7.wav')
-    sound_1 = pygame.mixer.Sound(beep_filename_1)
-    sound_2 = pygame.mixer.Sound(beep_filename_2)
+    sound_1 = sound_2 = None
+    if os.path.isfile(beep_filename_1):
+        sound_1 = pygame.mixer.Sound(beep_filename_1)
+    if os.path.isfile(beep_filename_2):
+        sound_2 = pygame.mixer.Sound(beep_filename_2)
     return sound_1, sound_2
 
 
