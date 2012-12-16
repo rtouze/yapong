@@ -18,6 +18,7 @@ class GameConfiguration():
         screenRes = (constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
         self.screen = pygame.display.set_mode(screenRes, 0, 32)
         self.background = pygame.Surface(self.screen.get_size())
+        self.background.fill((0, 0 ,0))
         self.clock = Clock()
 
 def main():
@@ -27,9 +28,15 @@ def main():
 
     title_scene = scenes.TitleScene(config)
     play_scene = scenes.GamingScene(config)
+    ending_scene = scenes.EndingScene(config)
 
     title_scene.play()
-    play_scene.play()
+
+    while True:
+        play_scene.play()
+        ending_scene.set_winner(play_scene.the_winner_is)
+        ending_scene.play()
+        play_scene.reset()
 
 if __name__ == '__main__':
     main()
