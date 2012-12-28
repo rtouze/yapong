@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 """ This module cares about pong sprites (ball, rackets)"""
 
+import config
 import constants
 import pygame
-import config
+import random
 
 class Ball(object):
+    """Defines ball object's behaviour."""
     def __init__(self, sound_1=None, sound_2=None):
         self.color = constants.WHITE
         self.dimension = {'width': 10, 'height': 10}
@@ -48,6 +50,8 @@ class Ball(object):
                 and self.direction['x'] == 1
 
     def _hit_a_racket(self, racket, hit_x_position_base):
+        """Tests if the ball hits a racket object. This methods should be used
+        by _hit_racket_1 and _hit_racket_2 only."""
         hit_x_position_low = hit_x_position_base - self.speeds['x']/2 
         hit_x_position_high = hit_x_position_base + self.speeds['x']/2 
         return self._hit_height(racket) \
@@ -80,16 +84,20 @@ class Ball(object):
         pygame.draw.rect(screen, self.color, ball_info)
 
     def reset_position(self):
+        """Resets ball position on screen when one of the player win the
+        point. Ball direction is chosen randomly, which is soooo much exciting!"""
         self.position['x'] = constants.SCREEN_WIDTH / 2
         self.position['x'] -= self.dimension['width'] / 2
         self.position['y'] = constants.SCREEN_HEIGHT / 2
         self.position['y'] -= self.dimension['height'] / 2
-        self.direction['x'] = 1
-        self.direction['y'] = 1
+        self.direction['x'] = random.choice((-1, 1))
+        self.direction['y'] = random.choice((-1, 1))
         self.speeds['x'] = config.BALL_SPEED
         self.speeds['y'] = config.BALL_SPEED
 
 class Racket(object):
+    """Definition for racket object. That's the rectangle that have to hit the
+    ugly square that we call the BALL"""
     def __init__(self, initial_x, initial_y):
         self.color = constants.WHITE
         self.dimension = {'width': 10, 'height': config.RACKET_HEIGHT}
@@ -121,6 +129,7 @@ class Racket(object):
         pygame.draw.rect(screen, self.color, info)
 
 class Net(object):
+    """Line that split the screen. It's animation is insane, believe me"""
     def __init__(self):
         self.segment_length = 20
         self.color = constants.WHITE
