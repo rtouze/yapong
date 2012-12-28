@@ -8,8 +8,6 @@ from yapong.drawers import ScoreDrawer, TitleDrawer
 from yapong.sprites import *
 import os
 
-__author__ = 'romain.touze@gmail.com'
-
 
 def font_player(func):
     """

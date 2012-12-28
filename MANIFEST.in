@@ -1,0 +1,2 @@
+include *.markdown
+recursive-include yapong/sounds *.wav

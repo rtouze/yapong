@@ -7,8 +7,7 @@ from pygame.time import Clock
 from yapong import constants
 import yapong.scenes as scenes
 
-__author__ = 'romain.touze@gmail.com'
-
+__all__ = ['main']
 
 class GameConfiguration():
     def __init__(self):
