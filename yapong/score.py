@@ -6,7 +6,7 @@ import constants
 class Score(object):
     def __init__(self):
         self.player1 = 0
-        self.player2 = 8
+        self.player2 = 0
         self.winner = 0 
 
     def check_score(self, ball):
