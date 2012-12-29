@@ -9,6 +9,8 @@ from sprites import *
 import os
 
 
+SOUND_DIR = os.path.join(os.path.dirname(__file__), 'sounds')
+
 def font_player(func):
     """
     Decorator to fill the screen, run passed function and class _run_loop
@@ -87,7 +89,7 @@ class EndingScene(FontScene):
                 True,
                 constants.WHITE
                 )
-        sound_file = os.path.join('.', 'sounds', 'applause-light-02.wav')
+        sound_file = os.path.join(SOUND_DIR, 'applause-light-02.wav')
         self.sound = pygame.mixer.Sound(sound_file)
 
     def set_winner(self, winner):
@@ -215,9 +217,8 @@ class GamingScene(object):
     def _init_sounds(self):
         """This functions initializes the sounds, stored in yapong/sounds, that
         will be played during the game."""
-        sound_dir = os.path.join('.', 'sounds')
-        beep_filename_1 = os.path.join(sound_dir, 'beep-7.wav')
-        beep_filename_2 = os.path.join(sound_dir, 'beep-8.wav')
+        beep_filename_1 = os.path.join(SOUND_DIR, 'beep-7.wav')
+        beep_filename_2 = os.path.join(SOUND_DIR, 'beep-8.wav')
         sound_1 = sound_2 = None
         if os.path.isfile(beep_filename_1):
             sound_1 = pygame.mixer.Sound(beep_filename_1)
