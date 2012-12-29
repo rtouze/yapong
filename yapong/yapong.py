@@ -4,8 +4,8 @@
 import pygame
 from pygame.locals import *
 from pygame.time import Clock
-from yapong import constants
-import yapong.scenes as scenes
+import constants
+import scenes
 
 __all__ = ['main']
 
